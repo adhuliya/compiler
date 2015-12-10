@@ -41,18 +41,19 @@ t_ignore  = ' \t'
 
 # Error handling rule
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print("Illegal character '{}'".format(t.value[0]))
     t.lexer.skip(1)
 
 # Build the lexer
-lexer = lex.lex()
+lexer = lex.lex(debug=1)
 
 
 ################################################################
 # Code to test
 ################################################################
 inpt = """
-x = 10 * (5 + 1)
+10 * (5 + 1)
+5 * 6
 """
 lexer.input(inpt)
 while True:
@@ -60,4 +61,6 @@ while True:
     if not tok:
         break;
     print (tok)
+
+# print (lexer.tokens)
 ################################################################
