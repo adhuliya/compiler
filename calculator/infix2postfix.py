@@ -10,17 +10,17 @@ The input is considered to be a space separated expression like (of single digit
 
 Grammar is:
 expr ==> expr + term | expr - term | term
-term ==> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+term ==> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | ( expr )
 
 Left factoring:
 expr ==> term rest
 rest ==> + term rest | - term rest | epsilon
-term ==> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+term ==> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | ( expr )
 
 Inserting Semantic Actions:
 expr ==> term rest | epsilon
 rest ==> + term {print ('+')} rest | - term {print ('-')} rest | epsilon
-term ==> 0 {print ('0')} | 1 {print ('1')} | and so on...
+term ==> 0 {print ('0')} | 1 {print ('1')} | and so on... | ( expr )
 """ 
 import evalpostfix as ep
 
@@ -58,6 +58,8 @@ def term ():
     global token
     if token in digits:
         postfixlist.append (token); match (token); 
+    elif token == '(':
+        match ('('); expr (); match (')');
 
 def formatproper (line):
     words = line.split ()
@@ -93,6 +95,3 @@ def main ():
 
 if __name__ == '__main__':
     main ()
-
-
-
