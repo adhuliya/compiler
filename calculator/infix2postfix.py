@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-This program an infix expression into a postfix expression using a syntax
+This program converts an infix expression into a postfix expression using a syntax
 directed translation scheme (i.e. with semantic actions). Currently no
 brackets.
 
@@ -44,7 +44,7 @@ def expr ():
     global token
     if token in digits:
         term (); rest ();
-    #else epsilon production
+    #else epsilon production implicit
 
 def rest () :
     global token
@@ -53,7 +53,7 @@ def rest () :
     elif token == '-':
         match ('-'); term (); postfixlist.append ('-'); rest ();
     #else epsilon production
-    
+
 def term ():
     global token
     if token in digits:
@@ -84,14 +84,16 @@ def main ():
         token = tokgen = None
         postfixlist = []
 
-        line = input ()
-        if (not line.strip() or line.strip() == 'quit' or
-           line.strip() == 'exit'):
+        line = input ().strip()
+        if (not line or line == 'quit' or
+           line == 'exit'):
             break
         compile (line)
-        #print ("Postfix expr = ", postfixlist)
+        print ("Postfix expr = ", postfixlist)
         result = ep.evalpfix (postfixlist)
         print (result)
 
 if __name__ == '__main__':
     main ()
+
+

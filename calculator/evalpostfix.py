@@ -9,7 +9,7 @@ and prints out the result.
 
 def tolist (pfixexpr):
     """
-    Conver a comma separated input into a list of strings
+    Convert a comma separated input into a list of strings
     """
     pfixlist = []
     elements = pfixexpr.split(" ")
