@@ -1,8 +1,6 @@
+#!/usr/bin/env python3
 import unittest
-
-import calclex as lex
-
-
+import lexer as lex
 
 class TestingClass(unittest.TestCase):
     def test_tokenize(self):
@@ -22,10 +20,9 @@ class TestingClass(unittest.TestCase):
                  ", LexToken(ID,'b',1,18), LexToken(RPAREN,')',1,19)"
                  ", LexToken(RPAREN,')',1,20)")}
 
-
+        # each token has (type, value, lineno, lexpos)
         for key, val in testcases.items():
             x = []
-            print(key) 
             for tok in lex.tokenize(key):
                 x.append(str(tok))
 

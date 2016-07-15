@@ -69,7 +69,7 @@ t_ignore  = ' \t'
 
 # Error handling rule
 def t_error(t):
-    print("Illegal character '{}'".format(t.value[0]))
+    print("Illegal character '{}' at position {}".format(t.value[0], t.lexpos))
     t.lexer.skip(1)
 
 # Build the lexer
