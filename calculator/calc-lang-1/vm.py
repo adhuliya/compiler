@@ -51,9 +51,8 @@ class VM:
 
         for elem in vmprogram:
             if elem in self.inbuilt or elem in self.operators:
-                value, error = self.operate(elem)
-                if error != None:
-                    return value, error
+                value, err = self.operate(elem)
+                if err: return None, err
                 self.stack.append(value)
             else:
                 self.stack.append(elem)
@@ -67,6 +66,10 @@ class VM:
             if type(elem) == float or type(elem) == int:
                 self.vars['_'] = elem
                 return elem, None
+
+            elif elem in self.vars:
+                return self.vars[elem], None
+
             else:
                 error = "Expecting {} or {} found {} with value {}\nStack = {}".format(
                         float, int, type(elem), elem, self.stack)
@@ -80,6 +83,9 @@ class VM:
 
     def operate(self, elem):
         error = None
+        if elem in self.vars:
+            return self.vars[elem], None
+        
         if elem == '+':
             leftopr, error = self.topStackValue()
             if error != None: return None, error
@@ -168,6 +174,7 @@ class VM:
 
             return abs(leftopr), None
 
+        return None, ("Unkown element " + elem)
 
 
     def topStackValue(self):

@@ -41,14 +41,14 @@ class Lexer:
 
         self.tokstreamended = False # for nextok() to use it fresh
 
-    def nexttok(self):
+    def nextToken(self):
         """
         Returns the next token or None if the stream has ended.
         When the stream has ended, the last element of the buffer is None.
         """
         tok = None
 
-        if self.tokindex < len(self.maxhistory):
+        if self.tokindex < self.maxhistory:
             tok = self.tokqueue[self.tokindex]
             logger.debug("self.tokindex = %s", self.tokindex)
             self.tokindex += 1
@@ -67,7 +67,7 @@ class Lexer:
         self.currtok = tok
         return tok
 
-    def prevtok(self):
+    def prevToken(self):
         """
         Shifts the internal index to the previous token returned.
         Returns True if there is a previous token left.
@@ -77,7 +77,7 @@ class Lexer:
             return True
         return False
 
-    def tok(self):
+    def token(self):
         """
         Returns the last token fetchech using nexttok()
         """

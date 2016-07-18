@@ -5,27 +5,29 @@
 # numbers and +,-,*,/
 # ------------------------------------------------------------
 import ply.lex as lex
+from toknames import TokNames
+
 
 # List of token names.   This is always required
 tokens = (
-    'NUMBER',
-    'ID',
-    'PLUS',
-    'MINUS',
-    'TIMES',
-    'DIVIDE',
-    'REMAINDER',
-    'POWER',
-    'LPAREN',
-    'RPAREN',
-    'COMMA',
-    'ASSIGN',
-    'PLUS_ASSIGN',
-    'MINUS_ASSIGN',
-    'TIMES_ASSIGN',
-    'DIVIDE_ASSIGN',
-    'REMAINDER_ASSIGN',
-    'POWER_ASSIGN',
+    TokNames.NUMBER, #'NUMBER',
+    TokNames.ID, #'ID',
+    TokNames.PLUS, #'PLUS',
+    TokNames.MINUS, #'MINUS',
+    TokNames.TIMES, #'TIMES',
+    TokNames.DIVIDE, #'DIVIDE',
+    TokNames.REMAINDER, #'REMAINDER',
+    TokNames.POWER, #'POWER',
+    TokNames.LPAREN, #'LPAREN',
+    TokNames.RPAREN, #'RPAREN',
+    TokNames.COMMA, #'COMMA',
+    TokNames.ASSIGN, #'ASSIGN',
+    TokNames.PLUS_ASSIGN, #'PLUS_ASSIGN',
+    TokNames.MINUS_ASSIGN, #'MINUS_ASSIGN',
+    TokNames.TIMES_ASSIGN, #'TIMES_ASSIGN',
+    TokNames.DIVIDE_ASSIGN, #'DIVIDE_ASSIGN',
+    TokNames.REMAINDER_ASSIGN, #'REMAINDER_ASSIGN',
+    TokNames.POWER_ASSIGN, #'POWER_ASSIGN',
 )
 
 # Regular expression rules for simple tokens
