@@ -87,92 +87,93 @@ class VM:
             return self.vars[elem], None
         
         if elem == '+':
-            leftopr, error = self.topStackValue()
-            if error != None: return None, error
-
             rightopr, error = self.topStackValue()
             if error != None: return None, error
 
-            return rightopr + leftopr, None
+            leftopr, error = self.topStackValue()
+            if error != None: return None, error
+
+            return leftopr + rightopr, None
         
         if elem == '-':
-            leftopr, error = self.topStackValue()
-            if error != None: return None, error
-
             rightopr, error = self.topStackValue()
             if error != None: return None, error
 
-            return rightopr - leftopr, None
+            leftopr, error = self.topStackValue()
+            if error != None: return None, error
+
+            return leftopr - rightopr, None
 
         if elem == '*':
-            leftopr, error = self.topStackValue()
-            if error != None: return None, error
-
             rightopr, error = self.topStackValue()
             if error != None: return None, error
 
-            return rightopr * leftopr, None
+            leftopr, error = self.topStackValue()
+            if error != None: return None, error
+
+            return leftopr * rightopr, None
 
         if elem == '/':
-            leftopr, error = self.topStackValue()
-            if error != None: return None, error
-
             rightopr, error = self.topStackValue()
             if error != None: return None, error
 
-            if leftopr == 0.0:
+            leftopr, error = self.topStackValue()
+            if error != None: return None, error
+
+            if rightopr == 0.0:
                 return None, "Division by zero! Stack = {}".format(self.stack)
 
-            return rightopr / leftopr, None
+            return leftopr / rightopr, None
 
         if elem == '**':
+            rightopr, error = self.topStackValue()
+            if error != None: return None, error
+
             leftopr, error = self.topStackValue()
             if error != None: return None, error
+
+            return leftopr ** rightopr, None
+
+        if elem == '=':
+            rightopr, error = self.topStackValue()
+            if error != None: return None, error
+
+            leftopr = self.stack.pop()
+            if type(leftopr) == str:
+                self.vars[leftopr] = rightopr
+                return rightopr, None
+            else:
+                return None, "lvalue required, got {}. Stack =".format(
+                        leftopr, self.stack)
+
+        if elem == '+=':
+            rightopr, error = self.topStackValue()
+            if error != None: return None, error
+
+            leftopr = self.stack.pop()
+            if type(leftopr) == str:
+                if leftopr in self.vars:
+                    self.vars[leftopr] = self.vars[leftopr] + rightopr
+                    return self.vars[leftopr], None
+                else:
+                    return None, "Undefined variable {}".format(leftopr)
+            else:
+                return None, "lvalue required, got {}. Stack =".format(
+                        leftopr, self.stack)
+
+        if elem == 'abs':
+            rparen = self.stack.pop()
+            if rparen != ')':
+                return None, "function:abs:Expecting ')' found {}".format(rparen)
 
             rightopr, error = self.topStackValue()
             if error != None: return None, error
 
-            return rightopr ** leftopr, None
+            lparen = self.stack.pop()
+            if lparen != '(':
+                return None, "function:abs:Expecting ')' found {}".format(lparen)
 
-        if elem == '=':
-            leftopr, error = self.topStackValue()
-            if error != None: return None, error
-
-            rightopr = self.stack.pop()
-            if type(rightopr) == str:
-                self.vars[rightopr] = leftopr
-                return leftopr, None
-            else:
-                return None, "lvalue required, got {}. Stack =".format(
-                        rightopr, self.stack)
-
-        if elem == '+=':
-            leftopr, error = self.topStackValue()
-            if error != None: return None, error
-
-            rightopr = self.stack.pop()
-            if type(rightopr) == str:
-                if rightopr in self.vars:
-                    self.vars[rightopr] = self.vars[rightopr] + leftopr
-                    return self.vars[rightopr], None
-                else:
-                    return None, "Undefined variable {}".format(rightopr)
-            else:
-                return None, "lvalue required, got {}. Stack =".format(
-                        rightopr, self.stack)
-
-        if elem == 'abs':
-            leftopr, error = self.topStackValue()
-            if error != None: return None, error
-
-            noneval, error = self.topStackValue()
-            if error != None: return None, error
-
-            if noneval != None:
-                return None, "function:abs:Expecting None found {}".format(
-                        noneval)
-
-            return abs(leftopr), None
+            return abs(rightopr), None
 
         return None, ("Unkown element " + elem)
 
@@ -202,3 +203,4 @@ if __name__ == '__main__':
     if err != None:
         print("Error:", err)
     print("Result:", val)
+

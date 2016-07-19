@@ -9,14 +9,13 @@ import parser
 import vm
 
 
+p = parser.Parser()
+v = vm.VM()
+
 def main():
     line = None
-    targetprogram = None
     err = None # reads the error (if any) returned from methods...
     val = None # the value to print
-
-    p = parser.Parser()
-    v = vm.VM()
 
     while True:
         line = None
@@ -26,18 +25,12 @@ def main():
 
         try:
             line = input(os.linesep + ">>> ")
-            if not line.strip(): continue
         except EOFError:
             break
 
-        targetprogram, err = p.parse(line)
-        if err:
-            print(err)
-            continue
+        ok, val, err = calculate(line)
+        if not ok: continue
 
-        print("Target Program:",  targetprogram)
-
-        val, err = v.calculate(targetprogram)
         if err: 
             print(err)
             continue
@@ -45,6 +38,23 @@ def main():
         if val:
             print(val)
 
+def calculate(line):
+    targetprogram = None
+    err = None # reads the error (if any) returned from methods...
+    val = None # the value to print
+
+    # if line is blank return False 
+    if not line.strip(): return False, None, None
+
+    targetprogram, err = p.parse(line)
+    if err: return True, None, err
+
+    # print("Target Program:",  targetprogram)
+
+    val, err = v.calculate(targetprogram)
+    if err: return True, None, err
+
+    return True, val, None
 
 
 if __name__ == '__main__':

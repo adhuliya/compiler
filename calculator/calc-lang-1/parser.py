@@ -72,7 +72,7 @@ class Parser:
         notok = False # it is not an assign stmt
 
         if self.currtok == None:
-            return ok, None
+            return notok, None
 
         if self.currtok.type in self.assigndict:
             toktype = self.currtok.type
@@ -324,7 +324,7 @@ class Parser:
             err = self.expr()
             if err: return err
 
-            err = params()
+            err = self.params()
             if err: return err
 
         else:
