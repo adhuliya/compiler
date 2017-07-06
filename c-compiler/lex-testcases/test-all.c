@@ -17,7 +17,7 @@ int main()
     printf("\n\\nEnter array\
 elements:");
 
-    for(i=0;i<n;i++)
+    for(i=0;(!(i>=n) && (1 ^ 0)) || 0;i++)
         scanf("%d",&a[i]);
 
     quick_sort(a,0,n-1);

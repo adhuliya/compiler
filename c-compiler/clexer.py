@@ -61,8 +61,8 @@ class Clexer(object):
         'ID',
         'INTEGER',
         'REAL',
-        'CHR',
-        'BADCHR',
+        'CHARACTER',
+        'BADCHARACTER',
         'STRING',
 
         'LPAREN',
@@ -83,12 +83,30 @@ class Clexer(object):
         'MINUS',
         'MOD',
 
+        'AND',
+        'OR',
+        'NOT',
+        # 'XOR', # doesn't exist
+
+        # 'BITAND', # AMPERSAND
+        'BITOR',
+        'BITNOT',
+        'BITXOR',
+
+        'LSHIFT',
+        'RSHIFT',
+
         'ASSIGN',
         'STARASSIGN',
         'DIVASSIGN',
         'PLUSASSIGN',
         'MINUSASSIGN',
         'MODASSIGN',
+        'BITANDASSIGN',
+        'BITORASSIGN',
+        'BITXORASSIGN',
+        'LSHIFTASSIGN',
+        'RSHIFTASSIGN',
         'INCREMENT',
         'DECREMENT',
 
@@ -102,7 +120,10 @@ class Clexer(object):
         'GE',
         'GT',
 
-        'ADDRESSOF',
+        'AMPERSAND',
+
+        'QUESTION', # Ternary Question mark '?'
+        'COLON', # Ternary Colon ':'
     ] + list(keywords.values())
 
 
@@ -122,6 +143,18 @@ class Clexer(object):
     t_DIV           = r"/"
     t_MOD           = r"%"
 
+    t_AND           = r"&&"
+    t_OR            = r"\|\|"
+    t_NOT           = r"!"
+
+    #t_BITAND       = r"&" # Already as AMPERSAND
+    t_BITOR         = r"\|"
+    t_BITXOR        = r"\^"
+    t_BITNOT        = r"~"
+
+    t_LSHIFT        = r"<<"
+    t_RSHIFT        = r">>"
+
     t_LT            = r"<"
     t_LE            = r"<="
     t_EQ            = r"=="
@@ -135,13 +168,21 @@ class Clexer(object):
     t_PLUSASSIGN    = r"/="
     t_MINUSASSIGN   = r"/="
     t_MODASSIGN     = r"/="
+    t_BITANDASSIGN  = r"&="
+    t_BITORASSIGN   = r"\|="
+    t_BITXORASSIGN  = r"\^="
+    t_LSHIFTASSIGN  = r"<<="
+    t_RSHIFTASSIGN  = r">>="
     t_INCREMENT     = r"\+\+"
     t_DECREMENT     = r"--"
 
     t_DOT           = r"\."
     t_ARROW         = r"->"
 
-    t_ADDRESSOF     = r"&"
+    t_AMPERSAND     = r"&"
+
+    t_QUESTION      = r"\?"
+    t_COLON         = r":"
 
     # A regular expression rule with some action code
     # Note addition of self parameter since we're in a class
@@ -175,7 +216,7 @@ class Clexer(object):
         return t
 
     def t_INTEGER(self, t):
-        r'0[Xx][0-9a-fA-F]+|\d+'
+        r'0[Xx][0-9a-fA-F]+|0[0-7]*|\d+'
         if t.value.lower().startswith("0x"):
             t.value = int(t.value, 16)
         elif t.value.startswith("0"):
@@ -185,11 +226,11 @@ class Clexer(object):
 
         return t
 
-    def t_CHR(self, t):
+    def t_CHARACTER(self, t):
         r"'(\\['anbvtf]|\\\d{3}|\\[Xx][0-9a-fA-F]{2}|.{1})'"
         return t
 
-    def t_BADCHR(self, t):
+    def t_BADCHARACTER(self, t):
         r"'.*?'"
         return t
 
